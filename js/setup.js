@@ -6,7 +6,6 @@ var WIZARD_COATCOLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100
 var WIZARD_EYESCOLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var WIZARD_FIREBALL = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
-
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
@@ -28,14 +27,20 @@ var onPopupEscPress = function (evt) {
     closePopup();
   }
 };
+var addFlagChangerOnFocus = function () {
+  setupName.addEventListener('focus', function () {
+    flag = true;
+  });
+};
 
-setupName.addEventListener('focus', function () {
-  flag = true;
-});
+var addFlagChangerOnBlur = function () {
+  setupName.addEventListener('blur', function () {
+    flag = false;
+  });
+};
 
-setupName.addEventListener('blur', function () {
-  flag = false;
-});
+addFlagChangerOnFocus();
+addFlagChangerOnBlur();
 
 var openPopup = function () {
   setup.classList.remove('hidden');
@@ -47,26 +52,31 @@ var closePopup = function () {
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
-setupOpen.addEventListener('click', function () {
-  openPopup();
-});
-
-setupOpen.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
+var addingListenersOnSetupOpen = function () {
+  setupOpen.addEventListener('click', function () {
     openPopup();
-  }
-});
+  });
 
-setupClose.addEventListener('click', function () {
-  closePopup();
-});
+  setupOpen.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      openPopup();
+    }
+  });
+};
 
-setupClose.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
+var removingListenersOnSetupClose = function () {
+  setupClose.addEventListener('click', function () {
     closePopup();
-  }
-});
+  });
 
+  setupClose.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      closePopup();
+    }
+  });
+};
+addingListenersOnSetupOpen();
+removingListenersOnSetupClose();
 var similarListElement = setup.querySelector('.setup-similar-list');
 
 var similarWizardTemplate = document.querySelector('#similar-wizard-template')
@@ -75,11 +85,11 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
 var amount = 4;
 var wizards = [];
 
-function getRandomValueInArr(parameter) {
+var getRandomValueInArr = function (parameter) {
   return parameter[Math.floor(Math.random() * parameter.length)];
-}
+};
 
-function createRandomData() {
+var createRandomData = function () {
 
   for (i = 0; i < amount; i++) {
     var wizardName = getRandomValueInArr(WIZARD_NAMES);
@@ -95,28 +105,33 @@ function createRandomData() {
     wizards[i] = similarWizard;
   }
   return wizards;
-}
+};
+
 wizards = createRandomData();
-function createDOMElements() {
+
+var createDOMElements = function () {
   var wizardElement = similarWizardTemplate.cloneNode(true);
   wizardElement.querySelector('.setup-similar-label').textContent = wizards[i].name;
   wizardElement.querySelector('.wizard-coat').style.fill = wizards[i].coat;
   wizardElement.querySelector('.wizard-eyes').style.fill = wizards[i].eyes;
   return wizardElement;
-}
+};
 
-function insertFragment() {
+var insertFragment = function () {
   var fragment = document.createDocumentFragment();
   for (i = 0; i < amount; i++) {
     fragment.appendChild(createDOMElements(i));
   }
   similarListElement.appendChild(fragment);
-}
+};
 insertFragment();
 
-setup.querySelector('.setup-similar').classList.remove('hidden');
-
+var showSimilarMages = function () {
+  setup.querySelector('.setup-similar').classList.remove('hidden');
+};
+showSimilarMages();
 i = 0;
+
 var changeColor = function (arr) {
   i++;
   if (i === arr.length) {
@@ -124,7 +139,7 @@ var changeColor = function (arr) {
   }
   return arr[i];
 };
-function changingWizard() {
+var changingWizard = function () {
   setupCoat.addEventListener('click', function () {
     setupCoat.style.fill = changeColor(WIZARD_COATCOLOR);
   });
@@ -135,5 +150,5 @@ function changingWizard() {
     changeColor(WIZARD_FIREBALL, setupFireball);
     setupFireball.style.background = changeColor(WIZARD_FIREBALL);
   });
-}
+};
 changingWizard();
