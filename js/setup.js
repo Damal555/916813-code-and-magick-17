@@ -47,9 +47,9 @@ var openPopup = function () {
   setup.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
   setupCoords = {
-   x: setup.style.left,
-   y: setup.style.top
- };
+    x: setup.style.left,
+    y: setup.style.top
+  };
 
 };
 
@@ -160,114 +160,3 @@ var changingWizard = function () {
   });
 };
 changingWizard();
-
-(function () {
-
-  var setupDialogElement = document.querySelector('.setup');
-  var dialogHandler = setupDialogElement.querySelector('.upload');
-
-  dialogHandler.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
-    var dragged = false;
-
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-      dragged = true;
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      setupDialogElement.style.top = (setupDialogElement.offsetTop - shift.y) + 'px';
-      setupDialogElement.style.left = (setupDialogElement.offsetLeft - shift.x) + 'px';
-
-    };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-
-      if (dragged) {
-        var onClickPreventDefault = function (clickEvt) {
-          clickEvt.preventDefault();
-          dialogHandler.removeEventListener('click', onClickPreventDefault);
-        };
-        dialogHandler.addEventListener('click', onClickPreventDefault);
-      }
-
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
-})();
-
-
-(function () {
-
-  var artifactsShopImg = document.querySelector('.setup-artifacts-cell img');
-
-  artifactsShopImg.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-    artifactsShopImg.style.zIndex = '100';
-    artifactsShopImg.style.position = 'absolute';
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
-    var dragged = false;
-
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-      dragged = true;
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      artifactsShopImg.style.top = (artifactsShopImg.offsetTop - shift.y) + 'px';
-      artifactsShopImg.style.left = (artifactsShopImg.offsetLeft - shift.x) + 'px';
-
-    };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-
-      if (dragged) {
-        var onClickPreventDefault = function (clickEvent) {
-          clickEvent.preventDefault();
-          artifactsShopImg.removeEventListener('click', onClickPreventDefault);
-        };
-        artifactsShopImg.addEventListener('click', onClickPreventDefault);
-      }
-
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
-})();
