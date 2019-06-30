@@ -12,6 +12,7 @@ var ENTER_KEYCODE = 13;
 var setup = document.querySelector('.setup');
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
+var setupCoords;
 
 var setupCoat = setup.querySelector('.setup-wizard .wizard-coat');
 var setupEyes = setup.querySelector('.setup-wizard .wizard-eyes');
@@ -45,11 +46,18 @@ addFlagChangerOnBlur();
 var openPopup = function () {
   setup.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
+  setupCoords = {
+    x: setup.style.left,
+    y: setup.style.top
+  };
+
 };
 
 var closePopup = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
+  setup.style.left = setupCoords.x;
+  setup.style.top = setupCoords.y;
 };
 
 var addingListenersOnSetupOpen = function () {
