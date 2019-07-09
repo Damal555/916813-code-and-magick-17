@@ -1,10 +1,10 @@
 'use strict';
 (function () {
 
-
   var dragged;
   var startCoords;
   var dialogHandler = window.setupGlobal.setup.querySelector('.upload');
+
   var onClickPreventDefault = function (event) {
     event.preventDefault();
     event.target.removeEventListener('click', onClickPreventDefault);
